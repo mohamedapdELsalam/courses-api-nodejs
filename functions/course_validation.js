@@ -1,5 +1,5 @@
 
-function courseValidation(req,res){
+function create(req,res){
      if (!req.body.title) {
         return res.json({ "error": "you must add course name" });
     }
@@ -7,5 +7,10 @@ function courseValidation(req,res){
         return res.json({ "error": "you must add course price" });
     }
 }
+function edit(req,res){
+    if(req.body.title == null && req.body.price == null){
+       return  res.status(400).json({ "message": "you must add a new title or a new price" });}  
+}
 
-module.exports = {courseValidation};
+
+module.exports = { create, edit};

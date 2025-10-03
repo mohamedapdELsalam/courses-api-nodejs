@@ -1,25 +1,30 @@
+require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const app = express();
+app.use(cors());
 app.use(express.json());
 const mongoose = require("mongoose");
 const coursesRouter = require("./routes/courses.routes");
-const url = "mongodb+srv://mohammadapdelsalam:flutterNodjes65@mohamed.ziame88.mongodb.net/courses?retryWrites=true&w=majority&appName=mohamed";
+const usersRouter = require("./routes/users.routes");
 
-mongoose.connect(url).then(() => {
+mongoose.connect(process.env.mongoUrl).then(() => {
     console.log("mongo db server started with mongoose");
 });
 
+console.log(process.env.name);
+
 app.use("/api/courses", coursesRouter);
+app.use("/api/users", usersRouter);
 
 app.all(/.*/, (req, res, next) => {
     return res.status(404).json({ "status": "error", "message": "this resource not found" });
 });
 
 app.use((error, req, res, next) => {
-    res.status(error.statusCode || 400).json({ "status": "fail", "message": error.message, "statusCode": error.statusCode });
+    res.status(error.statusCode || 404).json({ "status": "fail", "message": error.message, "statusCode": error.statusCode });
 });
 
-
-app.listen("3000", () => {
+app.listen(process.env.port, () => {
     console.log("hello, iam node and listing in port 3000");
 });
