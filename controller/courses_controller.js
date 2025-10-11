@@ -1,4 +1,4 @@
-const { courseValidation } = require("../functions/course_validation.js");
+const  courseValidation  = require("../functions/course_validation.js");
 const courseModel = require("../model/course.model");
 const asyncWrapper = require("../middleware/async_wrapper.js");
 const appError = require("../utls/app_errors.js");

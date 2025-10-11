@@ -11,11 +11,11 @@ const verifyToken = async (req, res, next) => {
 
     } catch (error) {
         console.log("error" , error);
-        return res.status(401). json({"error": error.message});
+        return res.status(401). json({"status": "fail", "message" : "you must sign in"});
     }
     console.log("my token ---- ", token);
 
-
+                                
 }
 
 module.exports = verifyToken;
