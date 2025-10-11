@@ -12,7 +12,6 @@ mongoose.connect(process.env.mongoUrl).then(() => {
     console.log("mongo db server started with mongoose");
 });
 
-console.log(process.env.name);
 
 app.use("/api/courses", coursesRouter);
 app.use("/api/users", usersRouter);

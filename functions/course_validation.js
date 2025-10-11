@@ -7,6 +7,7 @@ function create(req,res){
         return res.json({ "error": "you must add course price" });
     }
 }
+
 function edit(req,res){
     if(req.body.title == null && req.body.price == null){
        return  res.status(400).json({ "message": "you must add a new title or a new price" });}  

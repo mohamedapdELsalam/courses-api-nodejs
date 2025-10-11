@@ -28,7 +28,7 @@ const login = async (req, res) => {
 
 const register = async (req, res, next) => {
     userValidation.register(req, res);
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password , role} = req.body;
     const oldUser = await userModel.findOne({ email: email });
     if (oldUser) {
         const error = appError.create("the email already exist", 400);
@@ -37,7 +37,7 @@ const register = async (req, res, next) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const newUser = new userModel({
-        firstName, lastName, email, password: hashedPassword
+        firstName, lastName, email, password: hashedPassword,role
     });
     const token = await generateToken({email:newUser.email,id:newUser.id});
     newUser.token = token;
