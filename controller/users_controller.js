@@ -17,7 +17,7 @@ const login = async (req, res) => {
 
     const isPasswordTrue = await bcrypt.compare(password, user.password);
     if (user && isPasswordTrue) {
-         token = await generateToken({email:user.email,id:user.id});
+         token = await generateToken({email:user.email,id:user.id,role : user.role});
          user.token = token ;
          user.save();
         return res.status(200).json({ "status": "success", "msg": "you are logged in successfully", "data": user })
@@ -39,7 +39,7 @@ const register = async (req, res, next) => {
     const newUser = new userModel({
         firstName, lastName, email, password: hashedPassword,role
     });
-    const token = await generateToken({email:newUser.email,id:newUser.id});
+    const token = await generateToken({email:newUser.email,id:newUser.id , role : newUser.role});
     newUser.token = token;
     await newUser.save();
     res.status(201).json({ "status": "success", "data": newUser })

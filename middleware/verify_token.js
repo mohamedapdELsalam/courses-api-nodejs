@@ -6,7 +6,8 @@ const verifyToken = async (req, res, next) => {
     }
     const token = authHeader.split(" ")[1];
     try {
-        jwt.verify(token, process.env.jwtSecretKey);
+     const currentUser =   jwt.verify(token, process.env.jwtSecretKey);
+     req.currentUser = currentUser;
         next();
 
     } catch (error) {
