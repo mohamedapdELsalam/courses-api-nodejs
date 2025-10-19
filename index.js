@@ -11,7 +11,7 @@ const usersRouter = require("./routes/users.routes");
 mongoose.connect(process.env.mongoUrl).then(() => {
     console.log("mongo db server started with mongoose");
 });
-
+ 
 
 app.use("/api/courses", coursesRouter);
 app.use("/api/users", usersRouter);
@@ -21,7 +21,7 @@ app.all(/.*/, (req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
-    res.status(error.statusCode || 404).json({ "status": "fail", "message": error.message, "statusCode": error.statusCode });
+    res.status(error.statusCode || 404).json({ "status": error.statusText || "fail", "message": error.message, "statusCode": error.statusCode });
 });
 
 app.listen(process.env.port, () => {
