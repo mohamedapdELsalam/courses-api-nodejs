@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const userRoles = require("../utls/user_roles");
 
+
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -29,6 +30,10 @@ const userSchema = new mongoose.Schema({
         type:String,
         enum:[userRoles.user,userRoles.admin,userRoles.manger],
         default: userRoles.user
+    },
+    avatar :{
+        type : String,
+        default : "profile.jpg"
     }
 })
 
