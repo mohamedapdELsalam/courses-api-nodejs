@@ -17,9 +17,9 @@ const login = async (req, res) => {
 
     const isPasswordTrue = await bcrypt.compare(password, user.password);
     if (user && isPasswordTrue) {
-         token = await generateToken({email:user.email,id:user.id,role : user.role});
-         user.token = token ;
-         user.save();
+        token = await generateToken({ email: user.email, id: user.id, role: user.role });
+        user.token = token;
+        user.save();
         return res.status(200).json({ "status": "success", "msg": "you are logged in successfully", "data": user })
     }
     res.json({ "status": "fail", "message": "your email or password is mistake" })
@@ -28,7 +28,7 @@ const login = async (req, res) => {
 
 const register = async (req, res, next) => {
     userValidation.register(req, res);
-    const { firstName, lastName, email, password , role} = req.body;
+    const { firstName, lastName, email, password, role } = req.body;
     const oldUser = await userModel.findOne({ email: email });
     if (oldUser) {
         const error = appError.create("the email already exist", 400);
@@ -37,9 +37,9 @@ const register = async (req, res, next) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const newUser = new userModel({
-        firstName, lastName, email, password: hashedPassword,role
+        firstName, lastName, email, password: hashedPassword, role, avatar: req.file.filename
     });
-    const token = await generateToken({email:newUser.email,id:newUser.id , role : newUser.role});
+    const token = await generateToken({ email: newUser.email, id: newUser.id, role: newUser.role });
     newUser.token = token;
     await newUser.save();
     res.status(201).json({ "status": "success", "data": newUser })
