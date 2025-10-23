@@ -5,6 +5,8 @@ const userValidation = require("../functions/user_validation");
 const bcrypt = require("bcrypt");
 const generateToken = require("../functions/generate_jwt_token");
 const async_wrapper = require("../middleware/async_wrapper");
+const validator = require("validator");
+
 
 
 const login = async (req, res) => {
@@ -26,10 +28,12 @@ const login = async (req, res) => {
     res.json({ "status": "fail", "message": "your email or password is mistake" })
 };
 
-
 const register = async_wrapper(async (req, res, next) => {
     userValidation.register(req, res);
     const { firstName, lastName, email, password, role } = req.body;
+    if(!validator.isEmail(email)){
+   return res.status(200).json({ "status": "fail", "message":"check your email"  })
+    }
     const oldUser = await userModel.findOne({ email: email });
     if (oldUser) {
         const error = appError.create("the email already exist", 400);

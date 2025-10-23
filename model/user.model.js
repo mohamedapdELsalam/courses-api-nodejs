@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const validator = require("validator");
 const userRoles = require("../utls/user_roles");
 
 
@@ -17,7 +16,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         require: true,
         unique: true,
-        validate: [validator.isEmail,"this email is wrong , make sure your email !"]
+        // validate: [,"this email is wrong , make sure your email !"]
     },
     password: {
         type: String,
