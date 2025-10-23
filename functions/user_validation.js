@@ -1,8 +1,8 @@
 function login(req, res) {
     if (!req.body) {
-        return res.json({ "status": "error", "msg": "you must add your email and password" });
+        return res.json({ "status": "error", "msg": "you must add your email and password1" });
     } else if (!req.body.email && !req.body.password) {
-        return res.json({ "status": "error", "msg": "you must add your email and password" });
+        return res.json({ "status": "error", "msg": "you must add your email and password2" });
     }
     else if (!req.body.email) {
         return res.json({ "status": "error", "msg": "you must add your email" });
