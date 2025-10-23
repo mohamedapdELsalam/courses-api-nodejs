@@ -4,6 +4,7 @@ const appError = require("../utls/app_errors");
 const userValidation = require("../functions/user_validation");
 const bcrypt = require("bcrypt");
 const generateToken = require("../functions/generate_jwt_token");
+const async_wrapper = require("../middleware/async_wrapper");
 
 
 const login = async (req, res) => {
@@ -26,7 +27,7 @@ const login = async (req, res) => {
 };
 
 
-const register = async (req, res, next) => {
+const register = async_wrapper(async (req, res, next) => {
     userValidation.register(req, res);
     const { firstName, lastName, email, password, role } = req.body;
     const oldUser = await userModel.findOne({ email: email });
@@ -45,7 +46,7 @@ const register = async (req, res, next) => {
     await newUser.save();
     res.status(201).json({ "status": "success", "data": newUser })
 
-}
+}) 
 
 const verifyEmail = () => { };
 const changePassword = () => { };
