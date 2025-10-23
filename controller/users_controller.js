@@ -37,7 +37,8 @@ const register = async (req, res, next) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const newUser = new userModel({
-        firstName, lastName, email, password: hashedPassword, role, avatar: req.file.filename
+        firstName, lastName, email, password: hashedPassword, role,   avatar: req.file ? req.file.filename : "profile.jpg"
+
     });
     const token = await generateToken({ email: newUser.email, id: newUser.id, role: newUser.role });
     newUser.token = token;
