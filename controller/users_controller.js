@@ -49,10 +49,13 @@ const register = async_wrapper(async (req, res, next) => {
     });
     const token = await generateToken({ email: newUser.email, id: newUser.id, role: newUser.role });
     newUser.token = token;
-    otp =await sendOtp(newUser.email);
-
+    try {
+        otp = await sendOtp(newUser.email);
         newUser.otp = otp || 0;
-    
+    } catch (error) {
+        res.status(201).json({ "status": "error", "message": error.message })
+    }
+
     await newUser.save();
 
     res.status(201).json({ "status": "success", "data": newUser })
@@ -62,23 +65,23 @@ const register = async_wrapper(async (req, res, next) => {
 
 const verifyEmail = async (newUser) => {
 
-  otp = await sendOtp(newUser.email);
-    
+    otp = await sendOtp(newUser.email);
+
 };
 
-const checkOtp = async(req,res) => {
+const checkOtp = async (req, res) => {
     const { email, otp } = req.body;
-    user = await userModel.findOne({email:email});
-    if(user.otp == otp){
+    user = await userModel.findOne({ email: email });
+    if (user.otp == otp) {
         user.verified = true;
         await user.save();
-        res.status(200).json({"status":"success" ,"message":"you verified successfully" });
-    }else{
-        res.status(200).json({"status":"fail" ,"message":"your otp is mistake" });
+        res.status(200).json({ "status": "success", "message": "you verified successfully" });
+    } else {
+        res.status(200).json({ "status": "fail", "message": "your otp is mistake" });
     }
 };
 const changePassword = () => { };
 const getAllUsers = () => { };
 
 
-module.exports = { login, register, verifyEmail,checkOtp, changePassword, getAllUsers };
+module.exports = { login, register, verifyEmail, checkOtp, changePassword, getAllUsers };
