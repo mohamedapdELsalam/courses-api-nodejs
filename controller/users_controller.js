@@ -51,7 +51,7 @@ const register = async_wrapper(async (req, res, next) => {
     newUser.token = token;
     otp =await sendOtp(newUser.email);
 
-        newUser.otp = otp || "none";
+        newUser.otp = otp || 0;
     
     await newUser.save();
 
