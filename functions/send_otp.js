@@ -1,8 +1,11 @@
 const nodemailer = require("nodemailer");
+const app_errors = require("../utls/app_errors");
 
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
 
-const sendOtp = async  (email) => {
+const sendOtp = async  (email,req,res,next) => {
+
+ 
   const otp = generateOTP();
 
   const transporter = nodemailer.createTransport({
@@ -30,8 +33,10 @@ const sendOtp = async  (email) => {
     await transporter.sendMail(mailOptions);
     console.log(`✅ OTP: (${otp}) sent to:`, email);
     return otp;
-  } catch (error) {
-    console.error("❌ Error sending OTP:", error);
+  } catch (err) {
+    console.error("❌ Error sending OTP:", err);
+   const error =  app_errors.create(err,200,"fail");
+   next(error);
     return null;
   }
 };
