@@ -32,6 +32,7 @@ const sendOtp = async  (email) => {
     return otp;
   } catch (error) {
     console.error("❌ Error sending OTP:", error);
+    return json({"status": "fail"});
   }
 };
 
