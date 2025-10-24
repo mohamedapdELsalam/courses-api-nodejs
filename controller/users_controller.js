@@ -6,6 +6,8 @@ const bcrypt = require("bcrypt");
 const generateToken = require("../functions/generate_jwt_token");
 const async_wrapper = require("../middleware/async_wrapper");
 const validator = require("validator");
+const nodeMailer = require("nodemailer");
+const { sendOtp } = require("../functions/send_otp");
 
 
 
@@ -31,8 +33,8 @@ const login = async (req, res) => {
 const register = async_wrapper(async (req, res, next) => {
     userValidation.register(req, res);
     const { firstName, lastName, email, password, role } = req.body;
-    if(!validator.isEmail(email)){
-   return res.status(200).json({ "status": "fail", "message":"check your email"  })
+    if (!validator.isEmail(email)) {
+        return res.status(200).json({ "status": "fail", "message": "check your email" })
     }
     const oldUser = await userModel.findOne({ email: email });
     if (oldUser) {
@@ -42,7 +44,7 @@ const register = async_wrapper(async (req, res, next) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const newUser = new userModel({
-        firstName, lastName, email, password: hashedPassword, role,   avatar: req.file ? req.file.filename : "boy.jpg"
+        firstName, lastName, email, password: hashedPassword, role, avatar: req.file ? req.file.filename : "boy.jpg"
 
     });
     const token = await generateToken({ email: newUser.email, id: newUser.id, role: newUser.role });
@@ -50,11 +52,36 @@ const register = async_wrapper(async (req, res, next) => {
     await newUser.save();
     res.status(201).json({ "status": "success", "data": newUser })
 
-}) 
+})
 
-const verifyEmail = () => { };
+
+const verifyEmail = async (req, res) => {
+    const { firstName, lastName, email, password, role } = req.body;
+    console.log("email ----- : ",email);
+    user = await userModel.findOne({ email: email });
+
+    await sendOtp("mohammadapdelsalam@gmail.com")
+        .then(otp => {
+            res.status(200).json({ "status": "success", "otp": `${otp}` })
+            user.otp = otp;
+            user.save();
+        }
+        )
+        .catch(err => res.status(200).json({ "status": "error", "messge": err }))
+};
+const checkOtp = async(req,res) => {
+    const { email, otp } = req.body;
+    user = await userModel.findOne({email:email});
+    if(user.otp == otp){
+        user.verified = true;
+        await user.save();
+        res.status(200).json({"status":"success" ,"message":"you verified successfully" });
+    }else{
+        res.status(200).json({"status":"fail" ,"message":"your otp is mistake" });
+    }
+};
 const changePassword = () => { };
 const getAllUsers = () => { };
 
 
-module.exports = { login, register, verifyEmail, changePassword, getAllUsers };
+module.exports = { login, register, verifyEmail,checkOtp, changePassword, getAllUsers };

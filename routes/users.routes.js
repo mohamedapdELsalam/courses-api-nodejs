@@ -29,6 +29,8 @@ const upload = multer({ storage: diskStorage, fileFilter });
 router.route("/").get(usersController.getAllUsers);
 router.route("/login").post(usersController.login);
 router.route("/register").post(upload.single("avatar"), usersController.register);
+router.route("/verifyEmail").post( usersController.verifyEmail);
+router.route("/checkOtp").post( usersController.checkOtp);
 
 module.exports = router;
 
