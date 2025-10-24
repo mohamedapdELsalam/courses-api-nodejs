@@ -49,7 +49,10 @@ const register = async_wrapper(async (req, res, next) => {
     });
     const token = await generateToken({ email: newUser.email, id: newUser.id, role: newUser.role });
     newUser.token = token;
-    newUser.otp = await sendOtp(newUser.email);
+    otp =await sendOtp(newUser.email);
+
+        newUser.otp = otp || "none";
+    
     await newUser.save();
 
     res.status(201).json({ "status": "success", "data": newUser })
