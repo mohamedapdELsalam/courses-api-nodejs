@@ -51,7 +51,7 @@ const register = async_wrapper(async (req, res, next) => {
     const token = await generateToken({ email: newUser.email, id: newUser.id, role: newUser.role });
     newUser.token = token;
     try {
-        otp = await brevoSendOtp(newUser.email);
+        otp = await brevoSendOtp(newUser.email,req,res,next);
         newUser.otp = otp || 0;
     } catch (error) {
         res.status(201).json({ "status": "error", "message": error.message })

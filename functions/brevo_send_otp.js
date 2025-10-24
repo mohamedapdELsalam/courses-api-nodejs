@@ -1,10 +1,11 @@
 require("dotenv").config();
 const SibApiV3Sdk = require("@sendinblue/client");
+const app_errors = require("../utls/app_errors");
 
 // دالة لتوليد كود عشوائي (OTP)
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
 
-const brevoSendOtp = async (email) => {
+const brevoSendOtp = async (email,req,res,next) => {
   const otp = generateOTP();
 
   // إعداد الاتصال بخدمة Brevo
@@ -30,7 +31,10 @@ const brevoSendOtp = async (email) => {
     console.log(`✅ OTP (${otp}) sent to ${email}`);
     return otp;
   } catch (err) {
-    console.error("❌ Error sending OTP:", err);
+    console.err("❌ Error sending OTP:", err);
+    const error = app_errors.create(err,200,"error");
+    next(error);
+
     return null;
   }
 };
