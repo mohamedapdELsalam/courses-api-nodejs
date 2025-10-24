@@ -8,6 +8,7 @@ const async_wrapper = require("../middleware/async_wrapper");
 const validator = require("validator");
 const nodeMailer = require("nodemailer");
 const { sendOtp } = require("../functions/send_otp");
+const {brevoSendOtp} = require("../functions/brevo_send_otp");
 
 
 
@@ -50,7 +51,7 @@ const register = async_wrapper(async (req, res, next) => {
     const token = await generateToken({ email: newUser.email, id: newUser.id, role: newUser.role });
     newUser.token = token;
     try {
-        otp = await sendOtp(newUser.email,req,res,next);
+        otp = await brevoSendOtp(newUser.email);
         newUser.otp = otp || 0;
     } catch (error) {
         res.status(201).json({ "status": "error", "message": error.message })
