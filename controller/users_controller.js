@@ -49,26 +49,20 @@ const register = async_wrapper(async (req, res, next) => {
     });
     const token = await generateToken({ email: newUser.email, id: newUser.id, role: newUser.role });
     newUser.token = token;
+    newUser.otp = await sendOtp(newUser.email);
     await newUser.save();
+
     res.status(201).json({ "status": "success", "data": newUser })
 
 })
 
 
-const verifyEmail = async (req, res) => {
-    const { firstName, lastName, email, password, role } = req.body;
-    console.log("email ----- : ",email);
-    user = await userModel.findOne({ email: email });
+const verifyEmail = async (newUser) => {
 
-    await sendOtp("mohammadapdelsalam@gmail.com")
-        .then(otp => {
-            res.status(200).json({ "status": "success", "otp": `${otp}` })
-            user.otp = otp;
-            user.save();
-        }
-        )
-        .catch(err => res.status(200).json({ "status": "error", "messge": err }))
+  otp = await sendOtp(newUser.email);
+    
 };
+
 const checkOtp = async(req,res) => {
     const { email, otp } = req.body;
     user = await userModel.findOne({email:email});
