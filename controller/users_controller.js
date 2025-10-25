@@ -66,12 +66,18 @@ const register = async_wrapper(async (req, res, next) => {
 
 
 const resindOtp = async (req,res,next) => {
-    const {email} = req.body;
+    try{
+          const {email} = req.body;
    const user = await userModel.findOne({email:email});
     otp = await sendOtp(email);
     user.otp = otp;
     await user.save();
     res.json({"status" : "success" , "otp" : otp});
+    
+}catch(error){
+        res.json({"status" : "error" , "error" : error});
+    }
+  
 };
 
 const checkOtp = async (req, res) => {
