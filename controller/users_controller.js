@@ -9,6 +9,7 @@ const validator = require("validator");
 const nodeMailer = require("nodemailer");
 const { sendOtp } = require("../functions/send_otp");
 const {brevoSendOtp} = require("../functions/brevo_send_otp");
+const { user } = require("../utls/user_roles");
 
 
 
@@ -64,10 +65,13 @@ const register = async_wrapper(async (req, res, next) => {
 })
 
 
-const verifyEmail = async (newUser) => {
-
-    otp = await sendOtp(newUser.email);
-
+const resindOtp = async (req,res,next) => {
+    const {email} = req.body;
+   const user = await userModel.findOne({email:email});
+    otp = await sendOtp(email);
+    user.otp = otp;
+    await user.save();
+    res.json({"status" : "success" , "otp" : otp});
 };
 
 const checkOtp = async (req, res) => {
@@ -85,4 +89,4 @@ const changePassword = () => { };
 const getAllUsers = () => { };
 
 
-module.exports = { login, register, verifyEmail, checkOtp, changePassword, getAllUsers };
+module.exports = { login, register, resindOtp, checkOtp, changePassword, getAllUsers };
