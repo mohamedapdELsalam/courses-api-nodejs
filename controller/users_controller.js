@@ -67,15 +67,27 @@ const register = async_wrapper(async (req, res, next) => {
 
 const resindOtp = async (req,res,next) => {
     try{
-          const {email} = req.body;
-   const user = await userModel.findOne({email:email});
+          const {email,timeLimit,maxCount} = req.body;
+   const user = await userModel.findOne({email});
+   const now = Date.now();
+   const timePassed =  (now - user.lastResendTime) /1000;
+
+   if(timePassed < timeLimit && user.resendCount  >= maxCount){
+    return res.status(429).json({
+          "status" : "fail",
+          "message" : "Too many resend attempts. Try again later.",
+    })
+   }
+   
     otp = await brevoSendOtp(email,req,res,next);
+    user.lastResendTime = Date.now();
+    user.resendCount = timePassed > timeLimit ? 1 :user.resendCount+1
     user.otp = otp;
     await user.save();
     res.json({"status" : "success" , "otp" : otp});
     
 }catch(error){
-        res.json({"status" : "error" , "error" : error});
+        res.json({"status" : "error" , "error" : error.message});
     }
   
 };

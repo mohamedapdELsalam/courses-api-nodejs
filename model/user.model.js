@@ -41,6 +41,14 @@ const userSchema = new mongoose.Schema({
     verified: {
         type: Boolean,
         default: false
+    },
+    lastResendTime:{
+        type: Date,
+        default: null
+    },
+    resendCount:{
+        type : Number,
+        default :0
     }
 
 })
