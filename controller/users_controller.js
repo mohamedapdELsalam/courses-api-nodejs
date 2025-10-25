@@ -76,6 +76,7 @@ const resindOtp = async (req,res,next) => {
     return res.status(429).json({
           "status" : "fail",
           "message" : "Too many resend attempts. Try again later.",
+           "statusCode" : 429
     })
    }
    
@@ -87,7 +88,7 @@ const resindOtp = async (req,res,next) => {
     res.json({"status" : "success" , "otp" : otp});
     
 }catch(error){
-        res.json({"status" : "error" , "error" : error.message , "statusCode" : 429});
+        res.json({"status" : "error" , "error" : error.message });
     }
   
 };
