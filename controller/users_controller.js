@@ -87,7 +87,7 @@ const resindOtp = async (req,res,next) => {
     res.json({"status" : "success" , "otp" : otp});
     
 }catch(error){
-        res.json({"status" : "error" , "error" : error.message});
+        res.json({"status" : "error" , "error" : error.message , "statusCode" : 429});
     }
   
 };
