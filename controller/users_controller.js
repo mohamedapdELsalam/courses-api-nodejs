@@ -69,7 +69,7 @@ const resindOtp = async (req,res,next) => {
     try{
           const {email} = req.body;
    const user = await userModel.findOne({email:email});
-    otp = await sendOtp(email);
+    otp = await brevoSendOtp(email,req,res,next);
     user.otp = otp;
     await user.save();
     res.json({"status" : "success" , "otp" : otp});
