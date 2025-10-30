@@ -10,6 +10,7 @@ const usersRouter = require("./routes/users.routes");
 const adminRouter = require("./routes/admin.routes");
 const path = require("node:path");
 const lessonRouter = require("./routes/lesson.routes");
+const instructorsRouter = require("./routes/instructor.routes");
 
 mongoose.connect(process.env.mongoUrl).then(() => {
     console.log("mongo db server started with mongoose");
@@ -20,6 +21,7 @@ app.use("/api/courses", coursesRouter);
 app.use("/api/lessons", lessonRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/admins", adminRouter);
+app.use("/api/instructors", instructorsRouter);
 
 app.all(/.*/, (req, res, next) => {
     return res.status(404).json({ "status": "error", "message": "this resource not found" });
