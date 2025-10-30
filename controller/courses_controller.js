@@ -14,6 +14,11 @@ const getAllCourses = asyncWrapper( async (req, res) => {
     res.json({ "status": "success", "data": courses });
 }
 );
+const getCommonCourses = asyncWrapper( async (req, res) => { 
+    const courses = await courseModel.find({}, { "__v": false });
+    res.json({ "status": "success", "data": courses });
+}
+);
 const getCourse = asyncWrapper(async (req, res,next) => {
     const courseId = req.params.id;
     const course = await courseModel.findById(courseId);
@@ -67,6 +72,7 @@ const deleteCourse =  asyncWrapper( async (req, res,next) => {
 
 module.exports = {
     getAllCourses,
+    getCommonCourses,
     getCourse,
     createCourse,
     editCourse,
