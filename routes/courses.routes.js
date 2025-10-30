@@ -10,6 +10,7 @@ const courseController = require("../controller/courses_controller");
 router.route("/")
     .get(courseController.getAllCourses)
     .post(verifyToken, courseController.createCourse)
+    .delete(courseController.deleteAllCourses);
 router.route("/commonCourses")
     .get(courseController.getCommonCourses)
 router.route("/:id")

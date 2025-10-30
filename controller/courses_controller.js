@@ -15,8 +15,16 @@ const getAllCourses = asyncWrapper( async (req, res) => {
 }
 );
 const getCommonCourses = asyncWrapper( async (req, res) => { 
-    const courses = await courseModel.find({}, { "__v": false });
+    const courses = await courseModel.find({}, { "__v": false })
+    .populate("instructor","name email");
+    
     res.json({ "status": "success", "data": courses });
+}
+);
+const deleteAllCourses = asyncWrapper( async (req, res) => { 
+    await courseModel.deleteMany({instructor: null});
+    
+    res.json({ "status": "success" });
 }
 );
 const getCourse = asyncWrapper(async (req, res,next) => {
@@ -76,5 +84,6 @@ module.exports = {
     getCourse,
     createCourse,
     editCourse,
-    deleteCourse
+    deleteCourse,
+    deleteAllCourses
 }

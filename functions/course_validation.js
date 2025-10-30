@@ -15,6 +15,9 @@ function create(req,res){
     if (!req.body.duration) {
         return res.json({ "status": "fail", "message": "you must add course duration" });
     }
+    if (!req.body.instructor) {
+        return res.json({ "status": "fail", "message": "you must add course instructor" });
+    }
 }
 
 function edit(req,res){
