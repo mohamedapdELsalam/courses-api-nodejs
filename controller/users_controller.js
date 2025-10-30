@@ -27,7 +27,7 @@ const login = async (req, res) => {
         token = await generateToken({ email: user.email, id: user.id, role: user.role });
         user.token = token;
         user.save();
-        return res.status(200).json({ "status": "success", "msg": "you are logged in successfully", "data": user })
+        return res.status(200).json({ "status": "success", "message": "you are logged in successfully", "data": user })
     }
     res.json({ "status": "fail", "message": "your email or password is mistake" })
 };

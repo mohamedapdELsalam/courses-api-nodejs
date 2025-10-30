@@ -15,13 +15,13 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        require: true,
+        required: true,
         // unique: true,
         // validate: [,"this email is wrong , make sure your email !"]
     },
     password: {
         type: String,
-        require: true
+        required: true
     },
     token: {
         type: String
