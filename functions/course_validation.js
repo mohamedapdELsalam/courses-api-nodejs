@@ -6,7 +6,7 @@ function create(req,res){
     if (!req.body.price) {
         return res.json({ "status": "fail", "message": "you must add course price" });
     }
-    if (!req.body.image) {
+    if (!req.body.file) {
         return res.json({ "status": "fail", "message": "you must add course image" });
     }
     if (!req.body.description) {
