@@ -26,7 +26,6 @@ const courseSchema = new mongoose.Schema({
         enum: ["متقدم", "متوسط", "مبتدأ"]
     },duration:{
         type :String,
-        required:true
     },lessons:[{
         type : mongoose.Schema.Types.ObjectId,
         ref : "Lesson"
