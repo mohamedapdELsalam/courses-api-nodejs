@@ -9,7 +9,7 @@ const courseController = require("../controller/courses_controller");
 
 router.route("/")
     .get(courseController.getAllCourses)
-    .post(verifyToken, courseController.createCourse)
+    .post( courseController.createCourse)
     .delete(courseController.deleteAllCourses);
 router.route("/commonCourses")
     .get(courseController.getCommonCourses)
