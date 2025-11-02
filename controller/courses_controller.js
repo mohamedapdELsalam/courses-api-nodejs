@@ -16,7 +16,7 @@ const getAllCourses = asyncWrapper(async (req, res) => {
 );
 const getCommonCourses = asyncWrapper(async (req, res) => {
     const courses = await courseModel.find({}, { "__v": false })
-        .populate("instructor", "name email").populate("lessons","discription title duration");
+        .populate("instructor", "firstName lastName email").populate("lessons","discription title duration");
 
     res.json({ "status": "success", "data": courses });
 }
