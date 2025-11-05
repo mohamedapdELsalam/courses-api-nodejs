@@ -6,29 +6,27 @@ const allowedTo = require("../functions/allowed_to");
 const courseController = require("../controller/courses_controller");
 const path = require("node:path");
 const appError = require("../utls/app_errors");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
-const diskStorage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, path.join(__dirname,"../uploads/courses"));
-    },
+const cloudinary = require("cloudinary").v2;
 
-    filename: function (req, file, cb) {
-        const ext = file.mimetype.split("/")[1];
-        const fileName = "user-" + Date.now() + "." + ext
-        cb(null, fileName);
 
-    }
-})
-const fileFilter = function (req, file, cb) {
-    imageType = file.mimetype.split("/")[0];
-    if(imageType == "image"){
-        return cb(null,true);
-    }else{
-        return cb(appError.create(`avatar must be an image (${imageType}))`,400,"error"))
-    }
+cloudinary.config({
+  cloud_name: process.env.CloudName,
+  api_key: process.env.cloudApiKey,
+  api_secret: process.env.cloudApiSecret
+});
 
-}
-const upload = multer({ storage: diskStorage, fileFilter });
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "courses",
+    allowed_formats: ["jpg", "png", "jpeg"]
+  },
+});
+
+const upload = multer({ storage });
+
 
 
 router.route("/")

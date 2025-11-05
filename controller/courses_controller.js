@@ -22,8 +22,7 @@ const getCommonCourses = asyncWrapper(async (req, res) => {
 }
 );
 const deleteAllCourses = asyncWrapper(async (req, res) => {
-    await courseModel.deleteMany({ instructor: null });
-
+    await courseModel.deleteMany({  });
     res.json({ "status": "success" });
 }
 );
@@ -45,7 +44,7 @@ const getCourse = asyncWrapper(async (req, res, next) => {
 const createCourse = asyncWrapper(async (req, res) => {
     // courseValidation.create(req, res);
     console.log("mohamed : ",req.body);
-    const newCourse = new courseModel({ ...req.body, image: req.file ? req.file.filename : "profile.jpg" });
+    const newCourse = new courseModel({ ...req.body, image: req.file ? req.file.path : "profile.jpg" });
     await newCourse.save();
     res.status(201).json({ "status": "success", "data": newCourse });
 });
