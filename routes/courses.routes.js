@@ -5,11 +5,34 @@ const userRoles = require("../utls/user_roles");
 const allowedTo = require("../functions/allowed_to");
 router.use(express.json());
 const courseController = require("../controller/courses_controller");
+const multer = require("multer");
+const diskStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/courses');
+    },
+
+    filename: function (req, file, cb) {
+        const ext = file.mimetype.split("/")[1];
+        const fileName = "user-" + Date.now() + "." + ext
+        cb(null, fileName);
+
+    }
+})
+const fileFilter = function (req, file, cb) {
+    imageType = file.mimetype.split("/")[0];
+    if(imageType == "image"){
+        return cb(null,true);
+    }else{
+        return cb(appError.create("avatar must be an image",400,"error"))
+    }
+
+}
+const upload = multer({ storage: diskStorage, fileFilter });
 
 
 router.route("/")
     .get(courseController.getAllCourses)
-    .post( courseController.createCourse)
+    .post(upload.single("file"), courseController.createCourse)
     .delete(courseController.deleteAllCourses);
 router.route("/commonCourses")
     .get(courseController.getCommonCourses)
