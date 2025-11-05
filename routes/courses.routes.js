@@ -4,11 +4,12 @@ const verifyToken = require("../middleware/verify_token");
 const userRoles = require("../utls/user_roles");
 const allowedTo = require("../functions/allowed_to");
 const courseController = require("../controller/courses_controller");
+const path = require("node:path");
 const appError = require("../utls/app_errors");
 const multer = require("multer");
 const diskStorage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/courses');
+        cb(null, path.join(__dirname,"../uploads/courses"));
     },
 
     filename: function (req, file, cb) {
