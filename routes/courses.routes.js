@@ -23,7 +23,7 @@ const fileFilter = function (req, file, cb) {
     if(imageType == "image"){
         return cb(null,true);
     }else{
-        return cb(appError.create("avatar must be an image",400,"error"))
+        return cb(appError.create(`avatar must be an image (${imageType}))`,400,"error"))
     }
 
 }
