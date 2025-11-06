@@ -20,7 +20,7 @@ const addInstructor = async(req,res,next)=>{
 };
 
 const getMyCourses = async(req,res,next)=>{
-    const courseId = req.params.id;
+    const {courseId} = req.body;
     console.log(courseId);
     const courses = await courseModel.find({instructor:courseId});
     if (!courses) {
