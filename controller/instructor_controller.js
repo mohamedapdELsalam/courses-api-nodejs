@@ -23,7 +23,7 @@ const getMyCourses = async(req,res,next)=>{
     const {id} = req.body;
     const courses = await courseModel.find({instructor:id})
     .populate("instructor","email firstName lastName")
-    .populate("lesson" , "title discription duration order videoUrl");
+    .populate("lessons" , "title discription duration order videoUrl");
     if (!courses) {
         const error = appError.create("you haven't any courses", 404, "fail");
         return next(error);
