@@ -20,9 +20,10 @@ const addInstructor = async(req,res,next)=>{
 };
 
 const getMyCourses = async(req,res,next)=>{
-    const {courseId} = req.body;
-    console.log(courseId);
-    const courses = await courseModel.find({instructor:courseId});
+    console.log("aha");
+    const {id} = req.body;
+    console.log("id",id);
+    const courses = await courseModel.find({instructor:id});
     if (!courses) {
         const error = appError.create("you haven't any courses", 404, "fail");
         return next(error);

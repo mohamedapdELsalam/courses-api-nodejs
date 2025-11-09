@@ -5,8 +5,7 @@ router.use(express.json());
 
 
 router.route("/")
-    .get(instructorController.getMyCourses)
-    .post(instructorController.addInstructor);
+    .post(instructorController.getMyCourses)
 router.route("/:id")
     .get(instructorController.getMyCourses)
  
