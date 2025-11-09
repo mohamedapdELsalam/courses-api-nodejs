@@ -20,10 +20,8 @@ const addInstructor = async(req,res,next)=>{
 };
 
 const getMyCourses = async(req,res,next)=>{
-    console.log("aha");
     const {id} = req.body;
-    console.log("id",id);
-    const courses = await courseModel.find({instructor:id});
+    const courses = await courseModel.find({instructor:id}).populate("instructor","email firstName lastName");
     if (!courses) {
         const error = appError.create("you haven't any courses", 404, "fail");
         return next(error);
