@@ -16,7 +16,16 @@ const getLesson = async (req, res, next) => {
 const addLesson = async (req, res, next) => {
     lessonValidaion.add(req,res);
     const lesson = req.body;
-    const newLesson = new lessonModel(lesson);
+    console.log(lesson);
+    
+      const lastLesson = await lessonModel
+    .find({ course: lesson.course })
+    .sort({ order: -1 }) 
+    .limit(1)
+
+      const newOrder = lastLesson.length > 0 ? lastLesson[0].order + 1 : 1;
+
+    const newLesson = new lessonModel({...lesson,order:newOrder});
      await courseModel.findByIdAndUpdate(lesson.course, {
       $push: { lessons: newLesson._id }   
     });

@@ -12,9 +12,7 @@ function add(req,res){
     if (!req.body.duration) {
         return res.json({ "status": "fail", "message": "you must add lesson duration" });
     }
-    if (!req.body.order) {
-        return res.json({ "status": "fail", "message": "you must add lesson order" });
-    }
+  
 }
 
 function edit(req,res){
