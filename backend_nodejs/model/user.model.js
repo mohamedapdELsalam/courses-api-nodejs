@@ -6,11 +6,11 @@ const { verify } = require("jsonwebtoken");
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        require: true
+        required: true
     },
     lastName: {
         type: String,
-        require: true
+        required: true
 
     },
     email: {

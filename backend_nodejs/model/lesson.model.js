@@ -15,7 +15,6 @@ const lessonSchema = new mongoose.Schema({
     }, order: {
         type: Number,
         required :true,
-        unique:true,
     }, image: {
         type: String
     }, summaryFile: {
@@ -24,7 +23,14 @@ const lessonSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
         required:true
+    },
+    quiz: [
+    {
+        question: String,
+        options: [String],   
+        correctAnswer: Number 
     }
+]
 });
 
 module.exports = mongoose.model("Lesson",lessonSchema);
